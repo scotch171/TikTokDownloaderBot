@@ -14,3 +14,5 @@ COPY . .
 
 # Define the entry point for the container
 CMD ["npm", "start"]
+
+EXPOSE 8080

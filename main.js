@@ -4,6 +4,8 @@ require('dotenv').config();
 
 const bot = new TelegramBot(process.env.TOKEN, {polling: true});
 
+bot.setWebHook('')
+
 bot.on('message', async (message) => {
     if (!message.text.includes("tiktok.com")) {
         return
@@ -18,6 +20,7 @@ bot.on('message', async (message) => {
         console.log(e);
     }
 });
+
 
 
 
