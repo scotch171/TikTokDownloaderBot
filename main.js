@@ -1,13 +1,8 @@
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require("axios");
-const TOKEN = 'telegram token';
+require('dotenv').config();
 
-/** @see https://rapidapi.com/maatootz/api/tiktok-downloader-download-tiktok-videos-without-watermark/ */
-const RAPID_KEY = 'key';
-const RAPID_HOST = 'host';
-
-
-const bot = new TelegramBot(TOKEN, {polling: true});
+const bot = new TelegramBot(process.env.TOKEN, {polling: true});
 
 bot.on('message', async (message) => {
     if (!message.text.includes("tiktok.com")) {
@@ -37,8 +32,8 @@ async function downloadTikTok(url) {
         url: 'https://tiktok-downloader-download-tiktok-videos-without-watermark.p.rapidapi.com/vid/index',
         params: {url: url},
         headers: {
-            'X-RapidAPI-Key': RAPID_KEY,
-            'X-RapidAPI-Host': RAPID_HOST
+            'X-RapidAPI-Key': process.env.RAPID_KEY,
+            'X-RapidAPI-Host': process.env.RAPID_HOST
         }
     };
     const response = await axios.request(options);
