@@ -2,7 +2,9 @@ const { Telegraf } = require('telegraf');
 const axios = require("axios");
 require('dotenv').config();
 
-const bot = new Telegraf(process.env.BOT_TOKEN);
+console.log(process.env.TOKEN);
+
+const bot = new Telegraf(process.env.TOKEN);
 bot.start((ctx) => ctx.reply('Работаем'));
 bot.help((ctx) => ctx.reply('Бог помощь'));
 
