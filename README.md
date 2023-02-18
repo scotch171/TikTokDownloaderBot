@@ -1,7 +1,7 @@
 # TikTokDownloaderBot
 
-chande const in main.js
+chande const in index.js
 
 npm i
 
-node main.js
+node index.js
