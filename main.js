@@ -1,6 +1,14 @@
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require("axios");
+const express = require('express');
+
 require('dotenv').config();
+
+// приложение
+const app = express();
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
 
 const bot = new TelegramBot(process.env.TOKEN, {polling: true});
 
