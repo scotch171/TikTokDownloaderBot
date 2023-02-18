@@ -1,36 +1,36 @@
-const TelegramBot = require('node-telegram-bot-api');
+const { Telegraf } = require('telegraf');
 const axios = require("axios");
-const express = require('express');
-
 require('dotenv').config();
 
-// приложение
-const app = express();
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
+const bot = new Telegraf(process.env.BOT_TOKEN);
+bot.start((ctx) => ctx.reply('Работаем'));
+bot.help((ctx) => ctx.reply('Бог помощь'));
 
-const bot = new TelegramBot(process.env.TOKEN, {polling: true});
 
-bot.setWebHook('')
+bot.on('text', async (ctx) => {
+    const text = ctx.update.message.text;
 
-bot.on('message', async (message) => {
-    if (!message.text.includes("tiktok.com")) {
+    if (!text.includes("tiktok.com")) {
         return
     }
-    bot.sendMessage(message.chat.id, 'Начинаю загрузку');
+    ctx.reply('Начинаю загрузку');
 
     try {
-        const video = await downloadTikTok(message.text);
-        await bot.sendVideo(message.chat.id, video);
+        const video = await downloadTikTok(text);
+        ctx.replyWithVideo(video)
     } catch (e) {
-        bot.sendMessage(message.chat.id, 'Бот не работает')
+        bot.sendMessage(ctx.chat.id, 'Бот не работает')
         console.log(e);
     }
 });
 
+bot.command('quit', async (ctx) => {
+    // Explicit usage
+    await ctx.telegram.leaveChat(ctx.message.chat.id);
 
-
+    // Using context shortcut
+    await ctx.leaveChat();
+});
 
 /**
  *
@@ -50,3 +50,10 @@ async function downloadTikTok(url) {
     const response = await axios.request(options);
     return await response.data.video[0]
 }
+
+
+bot.launch();
+
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));
