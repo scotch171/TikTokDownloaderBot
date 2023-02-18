@@ -11,8 +11,7 @@ RUN npm install
 # Bundle app source
 COPY . .
 
+EXPOSE 8080
 
 # Define the entry point for the container
 CMD ["npm", "start"]
-
-EXPOSE 8080
